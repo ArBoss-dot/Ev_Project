@@ -1,0 +1,61 @@
+.rgba-gradient {
+    background: -moz-linear-gradient(45deg, rgba(1, 65, 38, 0.2), rgba(29, 210, 177, 0.2) 100%);
+    background: -webkit-linear-gradient(45deg, rgba(0, 0, 0, 0.7), rgba(29, 210, 177, 0.2) 100%);
+    background: -webkit-gradient(linear, 45deg, from(rgba(42, 27, 161, 0.7)), to(rgba(29, 210, 177, 0.2)));
+    background: -o-linear-gradient(45deg, rgba(42, 27, 161, 0.7), rgba(29, 210, 177, 0.2) 100%);
+    background: linear-gradient(to 45deg, rgba(42, 27, 161, 0.2), rgba(29, 210, 177, 0.2) 100%);
+    background-color: rgba(0, 6, 3, 0.5);
+  }
+.theam-color{
+    color: #00c878;
+    background-color: rgba(0, 0, 0, 0.2);
+    font-family: 'Play', sans-serif;
+    padding: 2px,2px,2px,2px;
+}
+
+.card{
+    color: #00c878;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.red-card{
+    background-color: linear-gradient(to 45deg, rgba(42, 27, 161, 1), rgba(29, 210, 177, 1) 100%);
+}
+
+.card-img-top{
+    padding: 40px;
+    float: left;
+    height: 300px;
+    align-items: center;
+}
+
+
+@media (min-width: 768px) {
+    .charger-image{
+        align-items: center;
+    } 
+   
+}
+
+.btn-lg{
+    size: 50px;
+}
+
+.red-text{
+    color:#cd413e;
+}
+
+.allign-item-center{
+    text-align: center;
+}
+
+.btn-center{
+    text-align: center;
+    background:green;
+    padding:15px;   
+}
+
+.dropdown-menu{
+    color: rgb(225, 99, 162);
+
+}

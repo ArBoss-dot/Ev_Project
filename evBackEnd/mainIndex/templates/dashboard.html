@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+
+{% block headInc %}
+<script src="https://kit.fontawesome.com/989bac2f08.js" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class=" card mx-2 my-4 bg-opacity-75 ">
+                <h5 class=" card-header mb-4 "> Grid Voltage </h5>
+                <h1 class="card-text text-center mb-2 ">{{gVolts}} 230 V <span class=" mx-4 fas fa-industry fa-2x"> </span> </h1>
+                <p class=" card-footer text-end "> Updated on : Time {{time}} </p>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class=" card mx-2 my-4 bg-opacity-75 ">
+                <h5 class=" card-header  mb-4 "> Solar PV Voltage </h5>
+                <h1 class="card-text text-center mb-2">{{sVolts}} 24 V <span class="mx-4 fas fa-solar-panel fa-2x"> </span> </h1>
+                <p class=" card-footer text-end "> Updated on : Time {{time}} </p>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class=" card mx-2 my-4 bg-opacity-75 ">
+                <h5 class=" card-header mb-4 ">EV Battery Voltage </h5>
+                <h1 class="card-text text-center mb-2">{{bVolts}} 12 V <span class="mx-4 fas fa-car-battery fa-2x"> </span> </h1>
+                <p class=" card-footer text-end "> Updated on : Time {{time}} </p>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class=" card mx-2 my-4 bg-opacity-75 ">
+                <h5 class=" card-header ">Total power </h5>
+                <p class="card-header mb-4">consumption from utility grid </p>
+                <h1 class="card-text text-center mb-2 ">{{gPower}} 1 KW <span class="mx-4 fas fa-industry fa-2x"> </span> </h1>
+                <p class=" card-footer text-end "> Updated on : Time {{time}} </p>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class=" card mx-2 my-4 bg-opacity-75 ">
+                <h5 class=" card-header ">Total power </h5>
+                <p class="card-header mb-4">consumption from PV array </p>
+                <h1 class="card-text text-center mb-2 ">{{pPower}} 1 KW <span class="mx-4 fas fa-solar-panel fa-2x"> </span> </h1>
+                <p class=" card-footer text-end "> Updated on : Time {{time}} </p>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class=" card mx-2 my-4 bg-opacity-75 ">
+                <h5 class=" card-header ">Total power </h5>
+                <p class="card-header mb-4">consumption from EV battery </p>
+                <h1 class="card-text text-center mb-2 ">{{bPower}} 1 KW <span class="mx-4 fas fa-car-battery fa-2x"> </span> </h1>
+                <p class=" card-footer text-end "> Updated on : Time {{time}} </p>
+            </div>
+        </div>
+    </div>
+<!-- star of charts -->
+    <div class="row">
+        <div class="col-lg-6 col-md-12 col-sm-8">
+            <div class="card my-4">
+                <div class="card-body">
+                    <canvas id="powerConsumptionGridMonthly"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-8">
+            <div class="card my-4">
+                <div class="card-body">
+                    <canvas id="powerConsumptionfromGridLive"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-8">
+            <div class="card my-4">
+                <div class="card-body">
+                    <canvas id="powerConsumptionSolarMonth"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-8">
+            <div class="card my-4">
+                <div class="card-body">
+                    <canvas id="powerConsumptionSolarDay"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-8 ">
+            <div class="card my-4">
+                <div class="card-body">
+                    <canvas id="totalPowerConsumptionFromEV"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}
+
+
+{% load static %}
+{% block scriptInc %}
+<script>
+// ======================================================================================= //
+// ------------------------------Live Data Script ---------------------------------------- //
+// ======================================================================================= //
+    const labelsLive = [
+  {% for data in liveDataTime %}{{data}}, {% endfor %}
+  ];
+
+const dataLive = {
+labels: labelsLive,
+datasets: [{
+  label: 'Power Consumption From Grid Live',
+  backgroundColor: 'rgb(225, 99, 162)',
+  hoverBackgroundColor:'rgb(204, 75, 75)',
+  pointHoverBorderWidth: 4,
+  pointHoverRadius:8,
+  tension:0.5,
+  borderColor: 'rgb(0, 200, 160)',
+  data: [{% for data in liveDataPower %}{{data}}, {% endfor %}],
+}]
+};
+
+const configLive = {
+type: 'line',
+data: dataLive,
+options: {
+
+}
+};
+
+const myLiveChart = new Chart(
+document.getElementById('powerConsumptionfromGridLive'),
+configLive
+);
+
+// ======================================================================================= //
+// ------------------------------Monthly Data Script ---------------------------------------- //
+// ======================================================================================= //
+
+const labels = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'June',
+  'July',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec'
+];
+
+const data = {
+  labels: labels,
+  datasets: [{
+    label: 'Power Consumption From Grid (Monthly)',
+    backgroundColor: 'rgb(0, 200, 160)',
+    hoverBackgroundColor:'rgb(225, 99, 162)',
+    pointHoverBorderWidth: 4,
+    pointHoverRadius:8,
+    tension:0.5,
+    borderColor: 'rgb(225, 99, 162)',
+    data: [0, 10, 5, 2, 20, 30, 45, 0, 0, 0, 0, 0, 0],
+  }]
+};
+
+const config = {
+  type: 'bar',
+  data: data,
+  options: {
+
+  }
+};
+
+const mySolarChart = new Chart(
+  document.getElementById('powerConsumptionGridMonthly'),
+  config
+  );
+
+// ======================================================================================= //
+// ------------------------------Monthly Data Script ---------------------------------------- //
+// ======================================================================================= //
+
+</script>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block headInc %}
+<script src="https://kit.fontawesome.com/989bac2f08.js" crossorigin="anonymous"></script>
+{% endblock %}
+{% block content %}
+<div class="container">
+
+    <div class="row ">
+        <div class="mx-auto col-sm-8 col-lg-6 col-md-8 py-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-header"> EV Connect Status </h5>
+                    {% if connect %}
+                    <h1 class="text-center card-img my-4 fa-solid fa-plug-circle-bolt fa-4x"></h1>
+                    <h6 class="card-footer text-end"> Electrical vehicle is connected to charger </h6>
+                    {% else %}
+                    <h1 class="text-center card-img  my-4 fa-solid fa-plug-circle-xmark text-danger fa-4x"></h1>
+                    <h6 class="card-footer text-danger text-end"> Electrical vehicle is not connected to charger </h6>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row ">
+        {% if state == 'ON' %}
+        <div class="mx-auto col-sm-8 col-lg-6 col-md-8 py-2">
+            <div class="mx-auto card">
+                <div class="card-body">
+                    <h5 class=" card-header">CHARGER MODE</h5>
+                    {% if mode == 1 %}
+                    <h1 class="fas fa-industry card-img text-center fa-3x text-warning "></h1>
+                    <h1 class="card-text text-center my-4 text-warning "> G2V (grid to vehicle) </h1>
+                    <h6 class=" card-footer text-end  text-warning"> Chargering EV battery with utility supply </h6>
+                    {% elif mode == 2 %}
+                    <h1 class="fa-solid fa-house-circle-check card-img text-center fa-3x text-danger "></h1>
+                    <h1 class="card-text text-center my-4 text-danger "> V2H (vehicle to home) </h1>
+                    <h6 class=" card-footer text-end text-danger"> Supplying power from EV battery to home </h6>
+                    {% elif mode == 3 %}
+                    <h1 class="fa-solid fa-solar-panel card-img text-center fa-3x text-info "></h1>
+                    <h1 class="card-text text-center my-4 text-info "> RE2V (PV to vehicle) </h1>
+                    <h6 class=" card-footer text-end text-info"> Chargering EV battery with PV supply </h6>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <div class="row ">
+        <div class="mx-auto col-sm-8 col-lg-6 col-md-8 py-2">
+            <div class="card">
+                <div class="card-body">
+                    {% if connect %}
+                    <h5 class="card-header mb-4"> SELECT CHARGER OPERATION MODE </h5>
+                    <div class=" dropdown text-center">
+                        <button class="btn btn-lg btn-info dropdown-toggle" type="button" id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Select mode
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Charge now</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Charge during low peak hrs</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Charge only with PV supply</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Switch to V2H mode </a></li>
+                        </ul>
+                    {% else %}
+                        <h6 class="text-center  text-danger"> EV NOT CONNECTED TO CHARGER!!... </h6>
+                        <div class=" dropdown mt-4 text-center">
+                        <button class="btn disabled btn-lg btn-info dropdown-toggle" type="button" id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Select mode
+                        </button>
+                    {% endif %}
+                        <div class="card-footer text-start mt-4">
+                            <ol>
+                                <li>
+                                    Charge now, ignores peak load on grid & starts charging immediately. 
+                                </li>
+                                <li>
+                                    Charge during low peak hours, will charge EV battery only during low peak hours.
+                                    optionaly it will also switch to PV power supply depending on availability.
+                                </li>
+                                <li>
+                                    Charge only with PV option ensures to charge EV only with PV power, it will never switch to utility supply.
+                                </li>
+                                <li>
+                                    Supplies power from EV battery to home.
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
