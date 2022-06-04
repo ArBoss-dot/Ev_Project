@@ -1,22 +1,42 @@
-
+from . import mqtt
 from random import Random, randint, random
 from statistics import mode
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
+from mainIndex.models import chargerState
 # Create your views here.
 
 def index(request):
     return render(request,'index.html')
 
 def control(request):
-    obj={
-        'state':'ON',
-        'mode': 1,
-        'battConnected' : "NO",
-        'connect': 1,
+    obj = chargerState.objects.get(id=1)
+    objPara={
+        'chargerState': obj.charger_state,
+        'chargerMode': obj.charger_mode,
+        'evConnectState' :obj.ev_connect_state,
     }
-    return render(request,'control.html',obj)
+    try:
+        mode = request.GET.get('Mode')
+        if mode == "CNow":
+            mqtt.client.publish("ev/charger/modeSet","1",0,False)
+            
+        elif mode == "1LHR":
+            mqtt.client.publish("ev/charger/modeSet","2",0,False)
+            
+        elif mode == "2V2H":
+            mqtt.client.publish("ev/charger/modeSet","3",0,False)
+            
+        elif mode == "3PV":
+            mqtt.client.publish("ev/charger/modeSet","4",0,False) 
+        else:
+            pass
+
+    except:
+        print('Exception occured')
+
+    return render(request,'control.html',objPara)
 
 def dashboard(request):
     dataSet = {

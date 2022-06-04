@@ -10,7 +10,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-header"> EV Connect Status </h5>
-                    {% if connect %}
+                    {% if evConnectState %}
                     <h1 class="text-center card-img my-4 fa-solid fa-plug-circle-bolt fa-4x"></h1>
                     <h6 class="card-footer text-end"> Electrical vehicle is connected to charger </h6>
                     {% else %}
@@ -22,20 +22,21 @@
         </div>
     </div>
     <div class="row ">
-        {% if state == 'ON' %}
+        {% if chargerState %}
         <div class="mx-auto col-sm-8 col-lg-6 col-md-8 py-2">
             <div class="mx-auto card">
                 <div class="card-body">
                     <h5 class=" card-header">CHARGER MODE</h5>
-                    {% if mode == 1 %}
+                    
+                    {% if chargerMode == 1 %}
                     <h1 class="fas fa-industry card-img text-center fa-3x text-warning "></h1>
                     <h1 class="card-text text-center my-4 text-warning "> G2V (grid to vehicle) </h1>
                     <h6 class=" card-footer text-end  text-warning"> Chargering EV battery with utility supply </h6>
-                    {% elif mode == 2 %}
+                    {% elif chargerMode == 2 %}
                     <h1 class="fa-solid fa-house-circle-check card-img text-center fa-3x text-danger "></h1>
                     <h1 class="card-text text-center my-4 text-danger "> V2H (vehicle to home) </h1>
                     <h6 class=" card-footer text-end text-danger"> Supplying power from EV battery to home </h6>
-                    {% elif mode == 3 %}
+                    {% elif chargerMode == 3 %}
                     <h1 class="fa-solid fa-solar-panel card-img text-center fa-3x text-info "></h1>
                     <h1 class="card-text text-center my-4 text-info "> RE2V (PV to vehicle) </h1>
                     <h6 class=" card-footer text-end text-info"> Chargering EV battery with PV supply </h6>
@@ -43,28 +44,34 @@
                 </div>
             </div>
         </div>
+        {% else %}
+        <div class="mx-auto col-sm-8 col-lg-6 col-md-8 py-2">
+            <div class="mx-auto card">
+                <div class="card-body text-danger text-center">
+                    <h5>CHARGER IS IN OFF STATE</h5>
+                </div>
+            </div>
+        </div>
+
         {% endif %}
     </div>
     <div class="row ">
         <div class="mx-auto col-sm-8 col-lg-6 col-md-8 py-2">
             <div class="card">
                 <div class="card-body">
-                    {% if connect %}
+                    {% if evConnectState %}
                     <h5 class="card-header mb-4"> SELECT CHARGER OPERATION MODE </h5>
                     <div class=" dropdown text-center">
-                        <button class="btn btn-lg btn-info dropdown-toggle" type="button" id="dropdownMenuButton1"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Select mode
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="#">Charge now</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Charge during low peak hrs</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Charge only with PV supply</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Switch to V2H mode </a></li>
-                        </ul>
+                        <form action="">
+                                <select name="Mode" class="btn-info btn-lg btn">
+                                    <option value="CNow">Charge now</option>
+                                    <option value="1LHR">Charge during low peak hrs</option>
+                                    <option value="2V2H">Switch to V2H mode</option>
+                                    <option value="3PV">Charge only with PV supply</option>
+                                </select>
+                                <br>
+                                <input class="mt-4 btn-danger btn btn-md" type="submit" value="SET-MODE">
+                        </form>
                     {% else %}
                         <h6 class="text-center  text-danger"> EV NOT CONNECTED TO CHARGER!!... </h6>
                         <div class=" dropdown mt-4 text-center">
