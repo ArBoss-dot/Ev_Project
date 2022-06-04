@@ -1,10 +1,11 @@
 from . import mqtt
+import datetime 
 from random import Random, randint, random
 from statistics import mode
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-from mainIndex.models import chargerState
+from mainIndex.models import chargerState, pConsumptionData
 # Create your views here.
 
 def index(request):
@@ -29,9 +30,7 @@ def control(request):
             mqtt.client.publish("ev/charger/modeSet","3",0,False)
             
         elif mode == "3PV":
-            mqtt.client.publish("ev/charger/modeSet","4",0,False) 
-        else:
-            pass
+            mqtt.client.publish("ev/charger/modeSet","4",0,False)             
 
     except:
         print('Exception occured')
@@ -39,9 +38,42 @@ def control(request):
     return render(request,'control.html',objPara)
 
 def dashboard(request):
+    objLastRow = pConsumptionData.objects.last()
+    today =datetime.datetime.now()
+    objTodayData = pConsumptionData.objects.filter(update_data__month=today.month)
+    
+
+    pConsumByHome       = 0
+    pBatteryFromPv      = 0
+    pBatteryFromUtil    = 0
+    for data in objTodayData:
+        pConsumByHome       = pConsumByHome     + (data.pow_cnsmp_frm_grid)
+        pBatteryFromPv      = pBatteryFromPv    + (data.pow_cnsmp_frm_pv)
+        pBatteryFromUtil    = pBatteryFromUtil  + (data.ev_batt_power_cnsmp)
+    
+    pBatteryFromUtil        = pBatteryFromUtil  - pBatteryFromPv
+
+    last_ten = pConsumptionData.objects.all().order_by('id')[:20]
+    # last_ten_in_ascending_order = reversed(last_ten)
+    time            = []
+    homePower       = []
+    batteryPower    = []
+    for data in last_ten:
+        time.append(int(data.update_time.strftime("%M")))
+        homePower.append(data.pow_cnsmp_frm_grid)
+        batteryPower.append(data.ev_batt_power_cnsmp)
     dataSet = {
-        'liveDataTime':[i for i in range(5)],
-        'liveDataPower':[j for j in range(1,10,2)],
+        'gVolts'        : objLastRow.grid_voltage,
+        'sVolts'        : objLastRow.solar_pv_voltage,
+        'bVolts'        : objLastRow.ev_batt_voltage,
+        'time'          : objLastRow.update_time,
+        'pBatryFrmUtil' : pBatteryFromUtil,     #Power Consumption by EV Battery From Utility.
+        'pBatryFrmPv'   : pBatteryFromPv,       #Power Consumption by EV Battery From PV Array.
+        'pConsumByHome' : pConsumByHome,        #Power Consumption by Home form Utility supply.
+        'pConsumByBatt' : pBatteryFromUtil,     #Power Consumption by EV Battery from Utility Supply.
+        'liveTime'      : time,
+        'liveHomePower' : homePower,
+        'libeBattPower' : batteryPower,
     }
     return render(request,'dashboard.html',dataSet)
 

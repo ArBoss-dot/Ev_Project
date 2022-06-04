@@ -11,88 +11,58 @@
         <div class="col-lg-4 col-md-4 col-sm-4">
             <div class=" card mx-2 my-4 bg-opacity-75 ">
                 <h5 class=" card-header mb-4 "> Grid Voltage </h5>
-                <h1 class="card-text text-center mb-2 ">{{gVolts}} 230 V <span class=" mx-4 fas fa-industry fa-2x"> </span> </h1>
-                <p class=" card-footer text-end "> Updated on : Time {{time}} </p>
+                <h1 class="card-text text-center mb-2 ">{{gVolts}} V <span class=" mx-4 fas fa-industry fa-2x">
+                    </span> </h1>
+                <p class=" card-footer text-end "> Updated on : {{time}} </p>
             </div>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4">
             <div class=" card mx-2 my-4 bg-opacity-75 ">
                 <h5 class=" card-header  mb-4 "> Solar PV Voltage </h5>
-                <h1 class="card-text text-center mb-2">{{sVolts}} 24 V <span class="mx-4 fas fa-solar-panel fa-2x"> </span> </h1>
-                <p class=" card-footer text-end "> Updated on : Time {{time}} </p>
+                <h1 class="card-text text-center mb-2">{{sVolts}} V <span class="mx-4 fas fa-solar-panel fa-2x">
+                    </span> </h1>
+                <p class=" card-footer text-end "> Updated on : {{time}} </p>
             </div>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4">
             <div class=" card mx-2 my-4 bg-opacity-75 ">
                 <h5 class=" card-header mb-4 ">EV Battery Voltage </h5>
-                <h1 class="card-text text-center mb-2">{{bVolts}} 12 V <span class="mx-4 fas fa-car-battery fa-2x"> </span> </h1>
-                <p class=" card-footer text-end "> Updated on : Time {{time}} </p>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-4">
-            <div class=" card mx-2 my-4 bg-opacity-75 ">
-                <h5 class=" card-header ">Total power </h5>
-                <p class="card-header mb-4">consumption from utility grid </p>
-                <h1 class="card-text text-center mb-2 ">{{gPower}} 1 KW <span class="mx-4 fas fa-industry fa-2x"> </span> </h1>
-                <p class=" card-footer text-end "> Updated on : Time {{time}} </p>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-4">
-            <div class=" card mx-2 my-4 bg-opacity-75 ">
-                <h5 class=" card-header ">Total power </h5>
-                <p class="card-header mb-4">consumption from PV array </p>
-                <h1 class="card-text text-center mb-2 ">{{pPower}} 1 KW <span class="mx-4 fas fa-solar-panel fa-2x"> </span> </h1>
-                <p class=" card-footer text-end "> Updated on : Time {{time}} </p>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-4">
-            <div class=" card mx-2 my-4 bg-opacity-75 ">
-                <h5 class=" card-header ">Total power </h5>
-                <p class="card-header mb-4">consumption from EV battery </p>
-                <h1 class="card-text text-center mb-2 ">{{bPower}} 1 KW <span class="mx-4 fas fa-car-battery fa-2x"> </span> </h1>
-                <p class=" card-footer text-end "> Updated on : Time {{time}} </p>
+                <h1 class="card-text text-center mb-2">{{bVolts}} V <span class="mx-4 fas fa-car-battery fa-2x">
+                    </span> </h1>
+                <p class=" card-footer text-end "> Updated on : {{time}} </p>
             </div>
         </div>
     </div>
-<!-- star of charts -->
+    <!-- star of charts -->
     <div class="row">
         <div class="col-lg-6 col-md-12 col-sm-8">
             <div class="card my-4">
                 <div class="card-body">
-                    <canvas id="powerConsumptionGridMonthly"></canvas>
+                    <canvas id="doughnutChartOfPbyBatt"></canvas>
+                    <div class="card-footer text-center">
+                        <h6>TOTAL POWER CONSUMED EV BATTERY : {{pBatryFrmUtil |add:pBatryFrmPv}}W</h6>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-lg-6 col-md-12 col-sm-8">
             <div class="card my-4">
                 <div class="card-body">
-                    <canvas id="powerConsumptionfromGridLive"></canvas>
+                    <canvas id="doughnutChartofPbyHome"></canvas>
+                    <div class="card-footer text-center">
+                        <h6>TOTAL POWER CONSUMED FROM UTILITY : {{pConsumByHome |add:pConsumByBatt}}W</h6>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-6 col-md-12 col-sm-8">
+        <div class="col-lg-12 col-md-12 col-sm-8">
             <div class="card my-4">
                 <div class="card-body">
-                    <canvas id="powerConsumptionSolarMonth"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6 col-md-12 col-sm-8">
-            <div class="card my-4">
-                <div class="card-body">
-                    <canvas id="powerConsumptionSolarDay"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6 col-md-12 col-sm-8 ">
-            <div class="card my-4">
-                <div class="card-body">
-                    <canvas id="totalPowerConsumptionFromEV"></canvas>
+                    <canvas id="lineChartForLivePowerConsumption"></canvas>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 
@@ -102,89 +72,161 @@
 {% load static %}
 {% block scriptInc %}
 <script>
-// ======================================================================================= //
-// ------------------------------Live Data Script ---------------------------------------- //
-// ======================================================================================= //
+    // ======================================================================================= //
+    // ------------------------------Live Data Script ---------------------------------------- //
+    // ======================================================================================= //
     const labelsLive = [
-  {% for data in liveDataTime %}{{data}}, {% endfor %}
-  ];
+        "UTILITY", "PVARRAY"
+    ];
 
-const dataLive = {
-labels: labelsLive,
-datasets: [{
-  label: 'Power Consumption From Grid Live',
-  backgroundColor: 'rgb(225, 99, 162)',
-  hoverBackgroundColor:'rgb(204, 75, 75)',
-  pointHoverBorderWidth: 4,
-  pointHoverRadius:8,
-  tension:0.5,
-  borderColor: 'rgb(0, 200, 160)',
-  data: [{% for data in liveDataPower %}{{data}}, {% endfor %}],
-}]
-};
+    const dataLive = {
+        labels: labelsLive,
+        datasets: [{
+            borderColor: null,
+            backgroundColor: [
+                "#CC3355",
+                "#ACD22D"
+            ],
+            data: [{{ pBatryFrmUtil }}, {{ pBatryFrmPv }}],
+        }]
+    };
 
-const configLive = {
-type: 'line',
-data: dataLive,
-options: {
+    const configLive = {
+        type: 'doughnut',
+        data: dataLive,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'POWER CONSUMPTION OF BETTERY FROM UTILITY & PV ARRAY IN(Watt)'
+                }
+            }
+        }
+    };
 
-}
-};
+    const myLiveChart = new Chart(
+        document.getElementById('doughnutChartOfPbyBatt'),
+        configLive
+    );
 
-const myLiveChart = new Chart(
-document.getElementById('powerConsumptionfromGridLive'),
-configLive
-);
+    // ======================================================================================= //
+    // ----------------------------- P BY HOME & EV_BATT FROM GRID ---------------------------------- //
+    // ======================================================================================= //
 
-// ======================================================================================= //
-// ------------------------------Monthly Data Script ---------------------------------------- //
-// ======================================================================================= //
+    const labels = [
+        'HOME',
+        'EV-BATTERY',
+    ];
 
-const labels = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'June',
-  'July',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec'
-];
+    const data = {
+        labels: labels,
+        datasets: [{
+            borderColor: null,
+            backgroundColor: [
+                "#CC3355",
+                "#55AAA5",
+            ],
+            data: [{{ pConsumByHome }}, {{ pConsumByBatt }}],
+        }]
+    };
 
-const data = {
-  labels: labels,
-  datasets: [{
-    label: 'Power Consumption From Grid (Monthly)',
-    backgroundColor: 'rgb(0, 200, 160)',
-    hoverBackgroundColor:'rgb(225, 99, 162)',
-    pointHoverBorderWidth: 4,
-    pointHoverRadius:8,
-    tension:0.5,
-    borderColor: 'rgb(225, 99, 162)',
-    data: [0, 10, 5, 2, 20, 30, 45, 0, 0, 0, 0, 0, 0],
-  }]
-};
+    const config = {
+        type: 'doughnut',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'POWER CONSUMPTION OF HOME & BATTERY FROM UTILITY GRID'
+                }
+            }
 
-const config = {
-  type: 'bar',
-  data: data,
-  options: {
+        }
+    };
 
-  }
-};
+    const mySolarChart = new Chart(
+        document.getElementById('doughnutChartofPbyHome'),
+        config
+    );
 
-const mySolarChart = new Chart(
-  document.getElementById('powerConsumptionGridMonthly'),
-  config
-  );
+    // =============================================================================================================== //
+    // ------------------------------Live Power Consumption by Home & Battery----------------------------------------- //
+    // =============================================================================================================== //
 
-// ======================================================================================= //
-// ------------------------------Monthly Data Script ---------------------------------------- //
-// ======================================================================================= //
+    const DATA_COUNT = 7;
+    const NUMBER_CFG = { count: DATA_COUNT, min: -100, max: 100 };
 
+    const lablesTime = {{liveTime}}
+    const dataLineChart = {
+        labels: lablesTime,
+        datasets: [
+            {
+                label: 'HOME',
+                data: {{liveHomePower}},
+                borderColor: "#E21D4C",
+                backgroundColor: "#F3A3B6",
+                tension: 0.4,
+            },
+            {
+                label: 'BATTERY',
+                data: {{libeBattPower}},
+                borderColor: "#1D4CE2",
+                backgroundColor: "#A3B6F3",
+                tension: 0.4,
+            }
+        ]
+    };
+
+
+
+    const configLine = {
+        type: 'line',
+        data: dataLineChart,
+        options: {
+            animations: {
+                radius: {
+                    duration: 400,
+                    easing: 'linear',
+                    loop: (context) => context.active
+                }
+            },
+            hoverRadius: 12,
+            hoverBackgroundColor: 'yellow',
+            interaction: {
+                mode: 'nearest',
+                intersect: false,
+                axis: 'x'
+            },
+            plugins: {
+                tooltip: {
+                    enabled: false
+                }
+            },
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'POWER CONSUMPTION BY HOME & BATTERY FROM GRID'
+                },
+            }
+        },
+    };
+
+    const pByHomeAndBattery = new Chart(
+        document.getElementById('lineChartForLivePowerConsumption'),
+        configLine
+    );
+// ================================================================================================================= //
 </script>
 {% endblock %}

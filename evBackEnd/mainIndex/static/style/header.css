@@ -59,3 +59,9 @@
     color: rgb(225, 99, 162);
 
 }
+
+.about p{
+    margin: 0;
+    text-indent: 2rem;
+    text-align: justify;
+}
