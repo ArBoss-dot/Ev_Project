@@ -17,6 +17,13 @@
     color: #00c878;
     background-color: rgba(0, 0, 0, 0.2);
 }
+.myCard{
+    color: #00c878;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+.headerText{
+    vertical-align:middle;
+}
 
 .red-card{
     background-color: linear-gradient(to 45deg, rgba(42, 27, 161, 1), rgba(29, 210, 177, 1) 100%);
@@ -28,13 +35,21 @@
     height: 300px;
     align-items: center;
 }
-
+.logo{
+    border-radius: 50%;
+}
+.image{
+    border-bottom-right-radius: 20%;
+    box-shadow: rgba(2, 139, 107, 0.35) 0px 5px 15px;
+}
 
 @media (min-width: 768px) {
     .charger-image{
         align-items: center;
     } 
-   
+    .headerText {
+        font-size: rfs-fluid-value(1.125rem);
+      }
 }
 
 .btn-lg{
@@ -59,9 +74,8 @@
     color: rgb(225, 99, 162);
 
 }
-
-.about p{
-    margin: 0;
-    text-indent: 2rem;
+.ptext{
+    
     text-align: justify;
+    text-justify: inter-word;
 }

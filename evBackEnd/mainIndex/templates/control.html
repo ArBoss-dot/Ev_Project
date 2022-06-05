@@ -17,6 +17,8 @@
                     <h1 class="text-center card-img  my-4 fa-solid fa-plug-circle-xmark text-danger fa-4x"></h1>
                     <h6 class="card-footer text-danger text-end"> Electrical vehicle is not connected to charger </h6>
                     {% endif %}
+                    <br>
+                    <h6 class="card-footer text-center"> Last updated on : {{time}}</h6>
                 </div>
             </div>
         </div>
@@ -68,12 +70,13 @@
                                     <option value="1LHR">Charge during low peak hrs</option>
                                     <option value="2V2H">Switch to V2H mode</option>
                                     <option value="3PV">Charge only with PV supply</option>
+                                    <option value="off">TURN OFF </option>
                                 </select>
                                 <br>
                                 <input class="mt-4 btn-danger btn btn-md" type="submit" value="SET-MODE">
                         </form>
                     {% else %}
-                        <h6 class="text-center  text-danger"> EV NOT CONNECTED TO CHARGER!!... </h6>
+                        <h6 class="text-center  text-danger"> EV IS NOT CONNECTED TO CHARGER!!... </h6>
                         <div class=" dropdown mt-4 text-center">
                         <button class="btn disabled btn-lg btn-info dropdown-toggle" type="button" id="dropdownMenuButton1"
                             data-bs-toggle="dropdown" aria-expanded="false">

@@ -8,17 +8,17 @@ client = mqtt.Client()
 
 
 def on_connect(client, userdata, flags, rc):
-    client.subscribe("ev/charger/#")
+    client.subscribe("ev/charger/get/#")
 
 
 def on_message(client, userdata, msg):
     print(msg.topic)
-    if msg.topic    == "ev/charger/modeUpdate/":
+    if msg.topic    == "ev/charger/get/modeUpdate/":
         updateModel.updateChargerState(msg.payload)
         print(msg.payload)
-    elif msg.topic  == "ev/charger/ConsumptionData/":
+    elif msg.topic  == "ev/charger/get/ConsumptionData/":
         updateModel.updateConsumptionData(msg.payload)
-    elif msg.topic  == "ev/charger/grid/cmd/":
+    elif msg.topic  == "ev/charger/get/grid/cmd/":
         pass
     else:
         print("Invalid Topic")
