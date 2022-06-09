@@ -1,7 +1,7 @@
 import paho.mqtt.client as mqtt
 from mainIndex.updateModel import updateModel
 
-HOST_IP = '127.0.0.1'
+HOST_IP = '43.204.37.8'
 HOST_PORT = 1883
 KEEPALIVE = 60
 client = mqtt.Client()
@@ -26,6 +26,7 @@ def on_message(client, userdata, msg):
 
 client.on_connect = on_connect
 client.on_message = on_message
+client.username_pw_set(username="project", password="Project@123")
 client.connect(HOST_IP, HOST_PORT, KEEPALIVE)
 
 
