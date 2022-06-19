@@ -25,19 +25,19 @@ def control(request):
     try:
         mode = request.GET.get('Mode')
         if mode == "CNow":
-            mqtt.client.publish("ev/charger/set/mode", "1", 0, False)
+            mqtt.client.publish("ev/charger/set/mode", "1", 1, False)
 
         elif mode == "1LHR":
-            mqtt.client.publish("ev/charger/set/mode", "2", 0, False)
+            mqtt.client.publish("ev/charger/set/mode", "2", 1, False)
 
         elif mode == "2V2H":
-            mqtt.client.publish("ev/charger/set/mode", "3", 0, False)
+            mqtt.client.publish("ev/charger/set/mode", "3", 1, False)
 
         elif mode == "3PV":
-            mqtt.client.publish("ev/charger/set/mode", "4", 0, False)
+            mqtt.client.publish("ev/charger/set/mode", "4", 1, False)
 
         elif mode == "off":
-            mqtt.client.publish("ev/charger/set/mode", "0", 0, False)
+            mqtt.client.publish("ev/charger/set/mode", "0", 1, False)
         
         else:
             print("Invalid Control Input")
