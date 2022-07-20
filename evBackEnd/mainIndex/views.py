@@ -21,6 +21,7 @@ def control(request):
         'chargerMode': obj.charger_mode,
         'evConnectState': obj.ev_connect_state,
         'time': obj.update_time,
+        'date': obj.update_date,
     }
     try:
         mode = request.GET.get('Mode')
