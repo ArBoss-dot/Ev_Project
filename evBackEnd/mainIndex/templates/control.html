@@ -34,11 +34,15 @@
                     <h1 class="fas fa-industry card-img text-center fa-3x text-warning "></h1>
                     <h1 class="card-text text-center my-4 text-warning "> G2V (grid to vehicle) </h1>
                     <h6 class=" card-footer text-end  text-warning"> Chargering EV battery with utility supply </h6>
-                    {% elif chargerMode == 2 %}
+                    {% if chargerMode == 2 %}
+                    <!-- <h1 class="fas fa-industry card-img text-center fa-3x text-warning "></h1> -->
+                    <h1 class="card-text text-center my-4 text-warning "> Economy Charging </h1>
+                    <h6 class=" card-footer text-end  text-warning"> Chargering EV Only during low peak hours</h6>
+                    {% elif chargerMode == 3 %}
                     <h1 class="fa-solid fa-house-circle-check card-img text-center fa-3x text-danger "></h1>
                     <h1 class="card-text text-center my-4 text-danger "> V2H (vehicle to home) </h1>
                     <h6 class=" card-footer text-end text-danger"> Supplying power from EV battery to home </h6>
-                    {% elif chargerMode == 3 %}
+                    {% elif chargerMode == 4 %}
                     <h1 class="fa-solid fa-solar-panel card-img text-center fa-3x text-info "></h1>
                     <h1 class="card-text text-center my-4 text-info "> RE2V (PV to vehicle) </h1>
                     <h6 class=" card-footer text-end text-info"> Chargering EV battery with PV supply </h6>
