@@ -1,7 +1,7 @@
 import paho.mqtt.client as mqtt
 from mainIndex.updateModel import updateModel
 
-HOST_IP = '65.2.34.9'
+HOST_IP = '3.110.30.35'
 HOST_PORT = 1883
 KEEPALIVE = 60
 client = mqtt.Client()
